@@ -20,16 +20,14 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public List<ScheduleDto.Simple> findAll(
-            @RequestParam(required = false) String start,
-            @RequestParam(required = false) String end,
-            @RequestParam(required = false) String user) {
-        return service.findAll(start, end, user);
+    public List<ScheduleDto.Simple> findAll(@ModelAttribute ScheduleDto.Query query) {
+        return service.findAll(query);
     }
 
     @PostMapping
     public ScheduleDto.Simple create(@RequestBody ScheduleDto.Create body) {
-        return service.create(body);
+        var result = service.create(body);
+        return result;
     }
 
     @PutMapping("{id}")
@@ -38,7 +36,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable int id, @RequestBody ScheduleDto.Delete body) {
-        service.delete(id, body);
+    public void delete(@PathVariable int id) {
+        service.delete(id);
     }
 }
