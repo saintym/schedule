@@ -8,7 +8,6 @@ import java.util.List;
 public interface ScheduleRepositoryInterface {
     Schedule save(Schedule schedule);
     Schedule findById(int id);
-
     List<Schedule> findAll(LocalDateTime start, LocalDateTime end, String keyword);
     void deleteById(int id);
 }

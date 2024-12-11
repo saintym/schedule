@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 public class ScheduleService {
+
     @Autowired
     private ScheduleRepositoryInterface repository;
 

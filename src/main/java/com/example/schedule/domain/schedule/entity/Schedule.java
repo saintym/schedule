@@ -1,19 +1,36 @@
 package com.example.schedule.domain.schedule.entity;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Schedule {
+    @Id
     private int id = 0;
+
+    @Column(nullable = false)
     private String todo;
-    private String user;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
     private String password;
+
+    @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public Schedule(
             int id,
             String todo,
-            String user,
+            User user,
             String password,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
@@ -27,8 +44,8 @@ public class Schedule {
     }
 
     public Schedule(
+            User user,
             String todo,
-            String user,
             String password
     ) {
         this.todo = todo;
@@ -46,14 +63,6 @@ public class Schedule {
 
     public void setTodo(String todo) {
         this.todo = todo;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public String getPassword() {
