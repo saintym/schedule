@@ -4,12 +4,14 @@ import com.example.schedule.domain.schedule.dto.ScheduleDto;
 import com.example.schedule.domain.schedule.entity.Schedule;
 import com.example.schedule.domain.schedule.repository.ScheduleRepository;
 import com.example.schedule.domain.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ScheduleService {
 
     @Autowired
@@ -22,28 +24,35 @@ public class ScheduleService {
         return new ScheduleDto.Simple(scheduleRepository.findById(id));
     }
 
-
     public List<ScheduleDto.Simple> findAll(ScheduleDto.Query query) {
         return scheduleRepository.findAllByQuery(query);
     }
 
     public ScheduleDto.Simple create(ScheduleDto.Create dto) {
         var schedule = toEntity(dto);
-        var user = schedule.getUser();
+        var user = userRepository.findById(dto.userId);
 
         user.addSchedule(schedule);
-        userRepository.save(user);
-
-        return new ScheduleDto.Simple(scheduleRepository.save(schedule));
+        var b = userRepository.save(user);
+        var a = scheduleRepository.save(schedule);
+        //---PROBLEM----//
+        return new ScheduleDto.Simple(a);
+        //---PROBLEM----//
     }
 
+    @Transactional
     public ScheduleDto.Simple update(int id, ScheduleDto.Update dto) {
         var schedule = scheduleRepository.findById(id);
         return new ScheduleDto.Simple(partialUpdate(schedule, dto));
     }
 
     public void delete(int id) {
-        //var schedule = scheduleRepository.findById(id);
+        var schedule = scheduleRepository.findById(id);
+        var user = schedule.getUser();
+
+        user.removeSchedule(schedule);
+        userRepository.save(user);
+
         scheduleRepository.deleteById(id);
     }
 
@@ -55,10 +64,6 @@ public class ScheduleService {
 
     private Schedule toEntity(ScheduleDto.Create dto) {
         var user = userRepository.findById(dto.userId);
-        return new Schedule(
-                user,
-                dto.title,
-                dto.todo
-        );
+        return new Schedule(user, dto.title, dto.todo);
     }
 }

@@ -14,7 +14,6 @@ public interface UserRepository extends Repository<User, Integer>, UserQueryRepo
 interface UserQueryRepositoryInterface {
 }
 
-
 @org.springframework.stereotype.Repository
 class UserRepositoryImpl implements UserQueryRepositoryInterface {
 }

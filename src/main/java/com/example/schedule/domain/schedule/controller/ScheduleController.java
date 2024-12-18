@@ -27,7 +27,9 @@ public class ScheduleController {
 
     @PostMapping
     public ScheduleDto.Simple create(@RequestBody ScheduleDto.Create body) {
-        return service.create(body);
+        var result = service.create(body);
+        System.out.println("CONTROLLER----1");
+        return result;
     }
 
     @PutMapping("{id}")

@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Schedule {
 
+    public Schedule(){}
+
     @Id
     @GeneratedValue
     private int id = 0;

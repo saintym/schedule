@@ -56,9 +56,11 @@ public class UserDto {
     }
 
     public static class Update {
+        public final String email;
         public final String password;
 
-        public Update(String password) {
+        public Update(String email, String password) {
+            this.email = email;
             this.password = password;
         }
     }

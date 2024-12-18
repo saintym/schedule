@@ -52,7 +52,7 @@ class ScheduleRepositoryImpl implements ScheduleQueryRepositoryInterface {
                 .toList();
     }
 
-    private ScheduleDto.Simple asSimple(Schedule schedule){
+    private ScheduleDto.Simple asSimple(Schedule schedule) {
         return new ScheduleDto.Simple(schedule);
     }
 }

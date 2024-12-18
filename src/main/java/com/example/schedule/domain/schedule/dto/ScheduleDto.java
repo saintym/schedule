@@ -27,25 +27,8 @@ public class ScheduleDto {
         public final String title;
         public final String todo;
         public final int userId;
-
         public final LocalDateTime createdAt;
         public final LocalDateTime updatedAt;
-
-        public Simple(
-                int id,
-                String title,
-                String todo,
-                int userId,
-                LocalDateTime createdAt,
-                LocalDateTime updatedAt
-        ) {
-            this.id = id;
-            this.title = title;
-            this.todo = todo;
-            this.userId = userId;
-            this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
-        }
 
         @QueryProjection
         public Simple(Schedule schedule) {

@@ -8,13 +8,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue
-    private int id;
+    private int id = 0;
 
     @Column(nullable = false)
     @NotBlank
@@ -29,13 +30,41 @@ public class User {
     private String password;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Schedule> schedules;
+    private List<Schedule> schedules = new ArrayList<>();
+
+    public User(
+            int id,
+            String name,
+            String email,
+            String password,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public User(
+            String name,
+            String email,
+            String password
+    ) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User() {}
 
     public int getId() {
         return id;
@@ -49,8 +78,16 @@ public class User {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -69,11 +106,11 @@ public class User {
         return schedules;
     }
 
-    public void addSchedule(Schedule schedule){
+    public void addSchedule(Schedule schedule) {
         this.schedules.add(schedule);
     }
 
-    public void removeSchedule(Schedule schedule){
+    public void removeSchedule(Schedule schedule) {
         this.schedules.remove(schedule);
     }
 }
