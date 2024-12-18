@@ -1,130 +1,89 @@
 package com.example.schedule.domain.schedule.dto;
 
 import com.example.schedule.domain.schedule.entity.Schedule;
+import com.querydsl.core.annotations.QueryProjection;
 
 import java.time.LocalDateTime;
 
 public class ScheduleDto {
+    public static class Query {
+        public final LocalDateTime start;
+        public final LocalDateTime end;
+        public final String name;
+
+        public Query(
+                LocalDateTime start,
+                LocalDateTime end,
+                String name
+        ) {
+            this.start = start;
+            this.end = end;
+            this.name = name;
+        }
+    }
+
     public static class Simple {
-        private final int id;
-        private final String todo;
-        private final String user;
-        private final String password;
-        private final LocalDateTime createdAt;
-        private final LocalDateTime updatedAt;
+        public final int id;
+        public final String title;
+        public final String todo;
+        public final int userId;
+
+        public final LocalDateTime createdAt;
+        public final LocalDateTime updatedAt;
 
         public Simple(
                 int id,
+                String title,
                 String todo,
-                String user,
-                String password,
+                int userId,
                 LocalDateTime createdAt,
                 LocalDateTime updatedAt
         ) {
             this.id = id;
+            this.title = title;
             this.todo = todo;
-            this.user = user;
-            this.password = password;
+            this.userId = userId;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
         }
 
+        @QueryProjection
         public Simple(Schedule schedule) {
             this.id = schedule.getId();
+            this.title = schedule.getTitle();
             this.todo = schedule.getTodo();
-            this.user = schedule.getUser();
-            this.password = schedule.getPassword();
+            this.userId = schedule.getUser().getId();
             this.createdAt = schedule.getCreatedAt();
             this.updatedAt = schedule.getUpdatedAt();
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getTodo() {
-            return todo;
-        }
-
-        public String getUser() {
-            return user;
-        }
-
-        public LocalDateTime getCreatedAt() {
-            return createdAt;
-        }
-
-        public LocalDateTime getUpdatedAt() {
-            return updatedAt;
         }
     }
 
     public static class Create {
-        private final String todo;
-        private final String user;
-        private final String password;
+        public final String todo;
+        public final int userId;
+        public final String title;
 
         public Create(
+                String title,
                 String todo,
-                String user,
-                String password
+                int userId
         ) {
             this.todo = todo;
-            this.user = user;
-            this.password = password;
-        }
-
-        public String getTodo() {
-            return todo;
-        }
-
-        public String getUser() {
-            return user;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public Schedule toEntity() {
-            return new Schedule(
-                    todo,
-                    user,
-                    password
-            );
+            this.title = title;
+            this.userId = userId;
         }
     }
 
     public static class Update {
-        private final String todo;
-        private final String user;
+        public final String todo;
+        public final String title;
 
         public Update(
                 String todo,
-                String user
+                String title
         ) {
             this.todo = todo;
-            this.user = user;
-        }
-
-        public String getTodo() {
-            return todo;
-        }
-
-        public String getUser() {
-            return user;
-        }
-    }
-
-    public static class Delete {
-        private final String password;
-
-        public Delete(String password) {
-            this.password = password;
-        }
-
-        public String getPassword() {
-            return password;
+            this.title = title;
         }
     }
 }
