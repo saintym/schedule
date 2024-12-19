@@ -14,4 +14,6 @@ public class AppConfig {
     public DatabaseInitializer databaseInitializer() {
         return new DatabaseInitializer(sqlFilePath);
     }
+
+
 }

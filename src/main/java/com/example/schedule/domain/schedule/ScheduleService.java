@@ -2,61 +2,67 @@ package com.example.schedule.domain.schedule;
 
 import com.example.schedule.domain.schedule.dto.ScheduleDto;
 import com.example.schedule.domain.schedule.entity.Schedule;
-import com.example.schedule.domain.schedule.repository.ScheduleRepositoryInterface;
+import com.example.schedule.domain.schedule.repository.ScheduleRepository;
+import com.example.schedule.domain.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
+@Transactional
 public class ScheduleService {
+
     @Autowired
-    private ScheduleRepositoryInterface repository;
+    private ScheduleRepository scheduleRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
     public ScheduleDto.Simple find(int id) {
-        return new ScheduleDto.Simple(repository.findById(id));
+        return new ScheduleDto.Simple(scheduleRepository.findById(id));
     }
 
-    public List<ScheduleDto.Simple> findAll(String start, String end, String keyword) {
-        LocalDateTime startTime = null;
-        LocalDateTime endTime = null;
-
-        if(!start.isEmpty() && !end.isEmpty()) {
-            startTime = LocalDateTime.parse(start);
-            endTime = LocalDateTime.parse(end);
-        }
-
-        var schedules = repository.findAll(startTime, endTime, keyword);
-
-        return schedules.stream()
-                .map(ScheduleDto.Simple::new)
-                .sorted(Comparator.comparing(ScheduleDto.Simple::getUpdatedAt).reversed())
-                .toList();
+    public List<ScheduleDto.Simple> findAll(ScheduleDto.Query query) {
+        return scheduleRepository.findAllByQuery(query);
     }
 
     public ScheduleDto.Simple create(ScheduleDto.Create dto) {
-        var schedule = repository.save(dto.toEntity());
+        var schedule = toEntity(dto);
+        var user = userRepository.findById(dto.userId);
+
+        user.addSchedule(schedule);
+        userRepository.save(user);
+        schedule = scheduleRepository.save(schedule);
+
         return new ScheduleDto.Simple(schedule);
     }
 
+    @Transactional
     public ScheduleDto.Simple update(int id, ScheduleDto.Update dto) {
-        var schedule = repository.findById(id);
+        var schedule = scheduleRepository.findById(id);
         return new ScheduleDto.Simple(partialUpdate(schedule, dto));
     }
 
-    public void delete(int id, ScheduleDto.Delete dto) {
-        var schedule = repository.findById(id);
-        if(schedule.getPassword().equals(dto.getPassword())) {
-            repository.deleteById(id);
-        }
+    public void delete(int id) {
+        var schedule = scheduleRepository.findById(id);
+        var user = schedule.getUser();
+
+        user.removeSchedule(schedule);
+        userRepository.save(user);
+
+        scheduleRepository.deleteById(id);
     }
 
     private Schedule partialUpdate(Schedule schedule, ScheduleDto.Update dto) {
-        schedule.setTodo(dto.getTodo());
-        schedule.setUser(dto.getUser());
-        schedule.setUpdatedAt(LocalDateTime.now());
-        return repository.save(schedule);
+        schedule.setTodo(dto.todo);
+        schedule.setTitle(dto.title);
+        return scheduleRepository.save(schedule);
+    }
+
+    private Schedule toEntity(ScheduleDto.Create dto) {
+        var user = userRepository.findById(dto.userId);
+        return new Schedule(user, dto.title, dto.todo);
     }
 }

@@ -17,13 +17,17 @@ public class DatabaseInitializer {
         try (BufferedReader reader = new BufferedReader(new FileReader(sqlFilePath));
              Statement statement = connection.createStatement()) {
 
-            StringBuilder sql = new StringBuilder();
             String line;
+            StringBuilder sql = new StringBuilder();
             while ((line = reader.readLine()) != null) {
-                sql.append(line).append("\n");
+                sql.append(line).append(" ");
+
+                if (line.trim().endsWith(";")) {
+                    statement.execute(sql.toString());
+                    sql.setLength(0);
+                }
             }
 
-            statement.execute(sql.toString());
             System.out.println(":::::: Database initialized successfully.");
         } catch (IOException e) {
             System.err.println(":::::: Failed to read SQL file: " + e.getMessage());
