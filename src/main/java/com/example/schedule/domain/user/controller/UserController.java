@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService service;
@@ -16,7 +16,7 @@ public class UserController {
         return service.find(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public UserDto.Simple create(@RequestBody UserDto.Create body) {
         return service.create(body);
     }

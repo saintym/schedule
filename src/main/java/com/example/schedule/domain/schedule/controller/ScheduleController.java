@@ -2,6 +2,7 @@ package com.example.schedule.domain.schedule.controller;
 
 import com.example.schedule.domain.schedule.ScheduleService;
 import com.example.schedule.domain.schedule.dto.ScheduleDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,6 @@ public class ScheduleController {
     @PostMapping
     public ScheduleDto.Simple create(@RequestBody ScheduleDto.Create body) {
         var result = service.create(body);
-        System.out.println("CONTROLLER----1");
         return result;
     }
 

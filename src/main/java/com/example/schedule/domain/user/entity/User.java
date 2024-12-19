@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id = 0;
 
     @Column(nullable = false)
@@ -35,7 +35,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Schedule> schedules = new ArrayList<>();
 
     public User(

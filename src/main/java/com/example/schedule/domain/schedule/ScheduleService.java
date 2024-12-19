@@ -3,6 +3,7 @@ package com.example.schedule.domain.schedule;
 import com.example.schedule.domain.schedule.dto.ScheduleDto;
 import com.example.schedule.domain.schedule.entity.Schedule;
 import com.example.schedule.domain.schedule.repository.ScheduleRepository;
+import com.example.schedule.domain.user.entity.User;
 import com.example.schedule.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,10 @@ public class ScheduleService {
         var user = userRepository.findById(dto.userId);
 
         user.addSchedule(schedule);
-        var b = userRepository.save(user);
-        var a = scheduleRepository.save(schedule);
-        //---PROBLEM----//
-        return new ScheduleDto.Simple(a);
-        //---PROBLEM----//
+        userRepository.save(user);
+        schedule = scheduleRepository.save(schedule);
+
+        return new ScheduleDto.Simple(schedule);
     }
 
     @Transactional
