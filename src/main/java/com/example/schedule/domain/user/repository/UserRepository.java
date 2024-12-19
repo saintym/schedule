@@ -7,9 +7,7 @@ import org.springframework.data.repository.Repository;
 
 public interface UserRepository extends Repository<User, Integer>, UserQueryRepositoryInterface {
     User save(User user);
-
     User findById(int id);
-
     void deleteById(int id);
 }
 
@@ -21,6 +19,7 @@ interface UserQueryRepositoryInterface {
 class UserRepositoryImpl implements UserQueryRepositoryInterface {
     QUser user = QUser.user;
     private final JPQLQueryFactory queryFactory;
+
     public UserRepositoryImpl(JPQLQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }

@@ -11,12 +11,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     private final SessionService sessionService;
 
-    public WebConfig(SessionService sessionService){
+    public WebConfig(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
     @Bean
-    public FilterRegistrationBean<SessionFilter> sessionFilter(){
+    public FilterRegistrationBean<SessionFilter> sessionFilter() {
 
         FilterRegistrationBean<SessionFilter> filterRegistrationBean = new FilterRegistrationBean<SessionFilter>();
         filterRegistrationBean.setFilter(new SessionFilter(sessionService));

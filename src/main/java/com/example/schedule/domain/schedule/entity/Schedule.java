@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Schedule {
 
-    public Schedule(){}
+    public Schedule() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

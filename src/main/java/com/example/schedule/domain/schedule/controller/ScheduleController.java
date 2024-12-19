@@ -14,7 +14,6 @@ public class ScheduleController {
     @Autowired
     private ScheduleService service;
 
-
     @GetMapping("{id}")
     public ScheduleDto.Simple find(@PathVariable int id) {
         return service.find(id);

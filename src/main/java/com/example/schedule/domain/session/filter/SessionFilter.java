@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class SessionFilter implements Filter {
-    public SessionFilter(SessionService sessionService){
+    public SessionFilter(SessionService sessionService) {
         this.service = sessionService;
     }
 
