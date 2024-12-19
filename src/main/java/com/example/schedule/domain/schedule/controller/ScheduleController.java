@@ -2,7 +2,6 @@ package com.example.schedule.domain.schedule.controller;
 
 import com.example.schedule.domain.schedule.ScheduleService;
 import com.example.schedule.domain.schedule.dto.ScheduleDto;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

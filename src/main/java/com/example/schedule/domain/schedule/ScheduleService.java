@@ -3,7 +3,6 @@ package com.example.schedule.domain.schedule;
 import com.example.schedule.domain.schedule.dto.ScheduleDto;
 import com.example.schedule.domain.schedule.entity.Schedule;
 import com.example.schedule.domain.schedule.repository.ScheduleRepository;
-import com.example.schedule.domain.user.entity.User;
 import com.example.schedule.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

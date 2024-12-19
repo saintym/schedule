@@ -1,6 +1,5 @@
 package com.example.schedule.domain.session;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
