@@ -25,7 +25,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'org.hibernate.validator:hibernate-validator'
-	//implementation 'org.glassfish:jakarta.el'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
