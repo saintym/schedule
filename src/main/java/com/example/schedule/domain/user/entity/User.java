@@ -1,9 +1,13 @@
 package com.example.schedule.domain.user.entity;
 
 import com.example.schedule.domain.schedule.entity.Schedule;
+import com.example.schedule.domain.user.dto.UserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,22 +46,6 @@ public class User {
     private List<Schedule> schedules = new ArrayList<>();
 
     public User(
-            int id,
-            String name,
-            String email,
-            String password,
-            LocalDateTime createdAt,
-            LocalDateTime updatedAt
-    ) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public User(
             String name,
             String email,
             String password
@@ -64,53 +55,15 @@ public class User {
         this.password = password;
     }
 
-    public User() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public List<Schedule> getSchedules() {
-        return schedules;
-    }
-
     public void addSchedule(Schedule schedule) {
         this.schedules.add(schedule);
     }
-
     public void removeSchedule(Schedule schedule) {
         this.schedules.remove(schedule);
+    }
+    public User partialUpdate(UserDto.Update dto) {
+        this.email = dto.email;
+        this.password = dto.password;
+        return this;
     }
 }

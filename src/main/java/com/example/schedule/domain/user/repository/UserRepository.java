@@ -5,12 +5,13 @@ import com.example.schedule.domain.user.entity.User;
 import com.querydsl.jpa.JPQLQueryFactory;
 import org.springframework.data.repository.Repository;
 
+import java.util.Optional;
+
 public interface UserRepository extends Repository<User, Integer>, UserQueryRepositoryInterface {
     User save(User user);
-
     User findById(int id);
-
     void deleteById(int id);
+    Optional<User> findByEmail(String email);
 }
 
 interface UserQueryRepositoryInterface {
@@ -21,6 +22,7 @@ interface UserQueryRepositoryInterface {
 class UserRepositoryImpl implements UserQueryRepositoryInterface {
     QUser user = QUser.user;
     private final JPQLQueryFactory queryFactory;
+
     public UserRepositoryImpl(JPQLQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }

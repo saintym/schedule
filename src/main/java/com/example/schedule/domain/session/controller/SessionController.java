@@ -2,7 +2,11 @@ package com.example.schedule.domain.session.controller;
 
 import com.example.schedule.domain.session.SessionService;
 import com.example.schedule.domain.session.dto.LoginRequestDto;
+import com.example.schedule.domain.session.dto.SignUpRequestDto;
+import com.example.schedule.domain.user.entity.User;
 import com.example.schedule.domain.user.repository.UserRepository;
+import com.example.schedule.exception.CustomException;
+import com.example.schedule.exception.ExceptionCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -13,14 +17,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/auth")
 public class SessionController {
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private SessionService sessionService;
+
+    @PostMapping("/signUp")
+    public String signUp(
+            @RequestBody SignUpRequestDto dto
+    ) {
+        if (!isValidateEmail(dto.getEmail())) {
+            throw new CustomException(ExceptionCode.INVALID_EMAIL);
+        }
+
+        if (!isValidatePassword(dto.getPassword())) {
+            throw new CustomException(ExceptionCode.INVALID_PASSWORD);
+        }
+
+        User user = new User(dto.getName(), dto.getEmail(), dto.getPassword());
+        userRepository.save(user);
+
+        return "Sign up successful.";
+    }
 
     @PostMapping("/login")
     public String login(
@@ -28,7 +48,7 @@ public class SessionController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        var user = userRepository.findByEmailAndPassword(dto.email(), dto.password());
+        var user = userRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword());
 
         if (user != null) {
             HttpSession session = request.getSession();
@@ -53,5 +73,17 @@ public class SessionController {
         session.invalidate();
 
         return "Logged out successfully.";
+    }
+
+
+    private boolean isValidatePassword(String password) {
+        return password.length() >= 8
+                && password.matches(".*\\d.*")
+                && password.matches(".*[A-Z].*");
+    }
+
+    private boolean isValidateEmail(String email) {
+        return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+                && userRepository.findByEmail(email).isEmpty();
     }
 }

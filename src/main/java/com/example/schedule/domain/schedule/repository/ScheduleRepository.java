@@ -11,9 +11,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends Repository<Schedule, Integer>, ScheduleQueryRepositoryInterface {
     Schedule save(Schedule schedule);
-
     Schedule findById(int id);
-
     void deleteById(int id);
 }
 

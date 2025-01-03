@@ -12,12 +12,12 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class SessionFilter implements Filter {
-    public SessionFilter(SessionService sessionService){
+    public SessionFilter(SessionService sessionService) {
         this.service = sessionService;
     }
 
     private SessionService service;
-    private static final String[] WHITE_LIST = {"/session/login", "/user/create"};
+    private static final String[] WHITE_LIST = {"/session/login", "/session/signUp"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
