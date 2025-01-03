@@ -18,21 +18,12 @@ public class UserService {
     }
 
     public UserDto.Simple update(int id, UserDto.Update dto) {
-        var user = repository.findById(id);
-        return new UserDto.Simple(partialUpdate(user, dto));
+        User user = repository.findById(id);
+        user = repository.save(user.partialUpdate(dto));
+        return new UserDto.Simple(user);
     }
 
     public void delete(int id) {
         repository.deleteById(id);
-    }
-
-    private User partialUpdate(User user, UserDto.Update dto) {
-        user.setEmail(dto.password);
-        user.setPassword(dto.password);
-        return repository.save(user);
-    }
-
-    private User toEntity(UserDto.Create dto) {
-        return new User(dto.name, dto.email, dto.password);
     }
 }
