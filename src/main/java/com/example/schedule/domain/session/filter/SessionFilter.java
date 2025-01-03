@@ -17,7 +17,7 @@ public class SessionFilter implements Filter {
     }
 
     private SessionService service;
-    private static final String[] WHITE_LIST = {"/session/login", "/user/create"};
+    private static final String[] WHITE_LIST = {"/session/login", "/session/signUp"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

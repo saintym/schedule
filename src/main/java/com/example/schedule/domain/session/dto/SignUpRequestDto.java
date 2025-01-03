@@ -7,7 +7,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LoginRequestDto{
-        @NotBlank String email;
-        @NotNull String password;
+public class SignUpRequestDto {
+    @NotBlank
+    String email;
+    @NotNull
+    String password;
+    @NotNull
+    String name;
 }

@@ -16,11 +16,6 @@ public class UserController {
         return service.find(id);
     }
 
-    @PostMapping("/create")
-    public UserDto.Simple create(@RequestBody UserDto.Create body) {
-        return service.create(body);
-    }
-
     @PutMapping("{id}")
     public UserDto.Simple update(@RequestBody UserDto.Update body, @PathVariable int id) {
         return service.update(id, body);

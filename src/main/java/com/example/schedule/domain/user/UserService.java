@@ -17,13 +17,6 @@ public class UserService {
         return new UserDto.Simple(repository.findById(id));
     }
 
-    public UserDto.Simple create(UserDto.Create dto) {
-        var user = toEntity(dto);
-        repository.save(user);
-
-        return new UserDto.Simple(user);
-    }
-
     public UserDto.Simple update(int id, UserDto.Update dto) {
         var user = repository.findById(id);
         return new UserDto.Simple(partialUpdate(user, dto));
