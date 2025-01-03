@@ -5,6 +5,8 @@ import com.example.schedule.domain.session.dto.LoginRequestDto;
 import com.example.schedule.domain.session.dto.SignUpRequestDto;
 import com.example.schedule.domain.user.entity.User;
 import com.example.schedule.domain.user.repository.UserRepository;
+import com.example.schedule.exception.CustomException;
+import com.example.schedule.exception.ExceptionCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -25,13 +27,13 @@ public class SessionController {
     @PostMapping("/signUp")
     public String signUp(
             @RequestBody SignUpRequestDto dto
-            ) {
-        if(!isValidateEmail(dto.getEmail())){
-            throw new IllegalArgumentException("Invalid email format. Please check email format or already registered email.");
+    ) {
+        if (!isValidateEmail(dto.getEmail())) {
+            throw new CustomException(ExceptionCode.INVALID_EMAIL);
         }
 
-        if(!isValidatePassword(dto.getPassword())){
-            throw new IllegalArgumentException("Invalid password. Please check password format.");
+        if (!isValidatePassword(dto.getPassword())) {
+            throw new CustomException(ExceptionCode.INVALID_PASSWORD);
         }
 
         User user = new User(dto.getName(), dto.getEmail(), dto.getPassword());
